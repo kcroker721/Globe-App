@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import SwiftUI
 import PhotosUI
-import UIKit
+import Combine
 
+@MainActor
 class LocationAlbumViewModel: ObservableObject {
     @Published var photos: [TravelPhoto] = []
     

@@ -25,10 +25,10 @@ class GlobeBorderRenderer {
         
         // Convert coordinate rings to 3D paths on sphere
         for ring in location.coordinates {
-            let vertices = ring.map { coordinate in
+            let vertices = ring.map { coordPair in
                 convertCoordinateToSphere(
-                    latitude: coordinate.latitude,
-                    longitude: coordinate.longitude,
+                    latitude: coordPair.latitude,
+                    longitude: coordPair.longitude,
                     radius: 1.002 // Slightly larger than globe radius
                 )
             }

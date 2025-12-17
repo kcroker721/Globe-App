@@ -8,16 +8,16 @@
 import Foundation
 import CoreLocation
 
-enum LocationType {
+enum LocationType: Codable {
     case country
     case usState
 }
 
-struct Location: Identifiable, Codable, Hashable {
+struct Location: Identifiable, Codable {
     let id: String // Country code or state abbreviation
     let name: String
     let type: LocationType
-    let coordinates: [[CLLocationCoordinate2D]] // GeoJSON polygon coordinates
+    let coordinates: [[CoordinatePair]] // GeoJSON polygon coordinates
     
     enum CodingKeys: String, CodingKey {
         case id, name, type
@@ -38,7 +38,7 @@ struct Location: Identifiable, Codable, Hashable {
         coordinates = []
     }
     
-    init(id: String, name: String, type: LocationType, coordinates: [[CLLocationCoordinate2D]]) {
+    init(id: String, name: String, type: LocationType, coordinates: [[CoordinatePair]]) {
         self.id = id
         self.name = name
         self.type = type
@@ -46,22 +46,22 @@ struct Location: Identifiable, Codable, Hashable {
     }
 }
 
-extension LocationType: Codable {}
-extension CLLocationCoordinate2D: Codable {
-    enum CodingKeys: String, CodingKey {
-        case latitude, longitude
+// Custom coordinate type that's Codable and Hashable
+struct CoordinatePair: Codable, Hashable {
+    let latitude: Double
+    let longitude: Double
+    
+    var clCoordinate: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
     
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(latitude, forKey: .latitude)
-        try container.encode(longitude, forKey: .longitude)
+    init(latitude: Double, longitude: Double) {
+        self.latitude = latitude
+        self.longitude = longitude
     }
     
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let latitude = try container.decode(Double.self, forKey: .latitude)
-        let longitude = try container.decode(Double.self, forKey: .longitude)
-        self.init(latitude: latitude, longitude: longitude)
+    init(from coordinate: CLLocationCoordinate2D) {
+        self.latitude = coordinate.latitude
+        self.longitude = coordinate.longitude
     }
 }
