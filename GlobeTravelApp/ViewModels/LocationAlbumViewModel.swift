@@ -18,9 +18,8 @@ class LocationAlbumViewModel: ObservableObject {
         for item in items {
             if let data = try? await item.loadTransferable(type: Data.self) {
                 let photo = TravelPhoto(locationId: location.id, imageData: data)
-                await MainActor.run {
-                    photos.append(photo)
-                }
+                // Already on MainActor, no need for MainActor.run
+                photos.append(photo)
                 // TODO: Save to persistent storage
             }
         }

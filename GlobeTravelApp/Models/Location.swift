@@ -13,7 +13,7 @@ enum LocationType: Codable {
     case usState
 }
 
-struct Location: Identifiable, Codable {
+struct Location: Identifiable, Codable, Hashable, Equatable {
     let id: String // Country code or state abbreviation
     let name: String
     let type: LocationType

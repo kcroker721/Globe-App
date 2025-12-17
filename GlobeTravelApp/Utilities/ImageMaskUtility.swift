@@ -25,7 +25,7 @@ class ImageMaskUtility {
     }
     
     /// Create a UIBezierPath from coordinates
-    static func createPath(from coordinates: [[CLLocationCoordinate2D]], in size: CGSize) -> UIBezierPath {
+    static func createPath(from coordinates: [[CoordinatePair]], in size: CGSize) -> UIBezierPath {
         let path = UIBezierPath()
         
         // TODO: Convert lat/long coordinates to screen coordinates
